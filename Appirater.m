@@ -37,6 +37,7 @@
 #import "Appirater.h"
 #import <SystemConfiguration/SCNetworkReachability.h>
 #include <netinet/in.h>
+#import "Flurry.h"
 
 #define DEFAULT_TIME_BEFORE_REMINDING 4
 
@@ -406,11 +407,14 @@ static BOOL _debug = NO;
             [Appirater setTimeBeforeReminding:_timeBeforeReminding + DEFAULT_TIME_BEFORE_REMINDING];
 			[userDefaults setDouble:[[NSDate date] timeIntervalSince1970] forKey:kAppiraterReminderRequestDate];
 			[userDefaults synchronize];
+            
+            [Flurry logEvent:@"[Appirater]_Remind_Later" withParameters:nil];
 			break;
 		}
 		case 1:
 		{
 			// they want to rate it
+            [Flurry logEvent:@"[Appirater]_Rate" withParameters:nil];
 			[Appirater rateApp];
 			break;
 		}
