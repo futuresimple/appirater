@@ -59,30 +59,31 @@ extern NSString *const kAppiraterBadImpressionsCount;
  This is the message your users will see once they've passed the day+launches
  threshold.
  */
-#define APPIRATER_LOCALIZED_MESSAGE     NSLocalizedString(@"Loving Base CRM? Rate us now!", nil)
+#define APPIRATER_LOCALIZED_MESSAGE     NSLocalizedString(@"Finding Base helpful?\nConsider rating us 5 stars in the App Store to help others discover Base.", nil)
 #define APPIRATER_MESSAGE				[NSString stringWithFormat:APPIRATER_LOCALIZED_MESSAGE]
 
 /*
  This is the title of the message alert that users will see.
  */
-#define APPIRATER_LOCALIZED_MESSAGE_TITLE   NSLocalizedString(@"Rate Base", nil)
+#define APPIRATER_LOCALIZED_MESSAGE_TITLE   NSLocalizedString(@"Recommend Base", nil)
 #define APPIRATER_MESSAGE_TITLE             [NSString stringWithFormat:APPIRATER_LOCALIZED_MESSAGE_TITLE]
 
 /*
  The text of the button that rejects reviewing the app.
  */
-#define APPIRATER_CANCEL_BUTTON			NSLocalizedString(@"No, Thanks", nil)
+#define APPIRATER_CANCEL_BUTTON			NSLocalizedString(@"Cancel", nil)
 
 /*
- Text of button that will send user to app review page.
+ Text of button that will send user to app review page. ★
  */
-#define APPIRATER_LOCALIZED_RATE_BUTTON NSLocalizedString(@"Rate Base", nil)
+//#define APPIRATER_LOCALIZED_RATE_BUTTON NSLocalizedString(@"Rate at 5 stars", nil)
+#define APPIRATER_LOCALIZED_RATE_BUTTON NSLocalizedString(@"Rate 5 Stars!", nil)
 #define APPIRATER_RATE_BUTTON			[NSString stringWithFormat:APPIRATER_LOCALIZED_RATE_BUTTON]
 
 /*
  Text for button to remind the user to review later.
- */
-#define APPIRATER_RATE_LATER			NSLocalizedString(@"Remind me later", nil)
+ */ 
+#define APPIRATER_RATE_LATER			NSLocalizedString(@"No, Thanks", nil)
 
 
 @interface Appirater : NSObject <UIAlertViewDelegate> {

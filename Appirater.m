@@ -38,6 +38,8 @@
 #import <SystemConfiguration/SCNetworkReachability.h>
 #include <netinet/in.h>
 
+#define DEFAULT_TIME_BEFORE_REMINDING 4
+
 NSString *const kAppiraterFirstUseDate				= @"kAppiraterFirstUseDate";
 NSString *const kAppiraterUseCount					= @"kAppiraterUseCount";
 NSString *const kAppiraterSignificantEventCount		= @"kAppiraterSignificantEventCount";
@@ -145,8 +147,8 @@ static BOOL _debug = NO;
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:APPIRATER_MESSAGE_TITLE
 														 message:APPIRATER_MESSAGE
 														delegate:self
-											   cancelButtonTitle:APPIRATER_CANCEL_BUTTON
-											   otherButtonTitles:APPIRATER_RATE_BUTTON, APPIRATER_RATE_LATER, nil];
+											   cancelButtonTitle:APPIRATER_RATE_LATER
+											   otherButtonTitles:APPIRATER_RATE_BUTTON, nil];
 	self.ratingAlert = alertView;
 	[alertView show];
 }
@@ -289,6 +291,7 @@ static BOOL _debug = NO;
 		[userDefaults setBool:NO forKey:kAppiraterDeclinedToRate];
 		[userDefaults setDouble:0 forKey:kAppiraterReminderRequestDate];
         [userDefaults setInteger:0 forKey:kAppiraterBadImpressionsCount];
+        [Appirater setTimeBeforeReminding:DEFAULT_TIME_BEFORE_REMINDING];
 	}
 	
 	[userDefaults synchronize];
@@ -399,8 +402,9 @@ static BOOL _debug = NO;
 	switch (buttonIndex) {
 		case 0:
 		{
-			// they don't want to rate it
-			[userDefaults setBool:YES forKey:kAppiraterDeclinedToRate];
+			// remind them later
+            [Appirater setTimeBeforeReminding:_timeBeforeReminding + DEFAULT_TIME_BEFORE_REMINDING];
+			[userDefaults setDouble:[[NSDate date] timeIntervalSince1970] forKey:kAppiraterReminderRequestDate];
 			[userDefaults synchronize];
 			break;
 		}
@@ -410,11 +414,6 @@ static BOOL _debug = NO;
 			[Appirater rateApp];
 			break;
 		}
-		case 2:
-			// remind them later
-			[userDefaults setDouble:[[NSDate date] timeIntervalSince1970] forKey:kAppiraterReminderRequestDate];
-			[userDefaults synchronize];
-			break;
 		default:
 			break;
 	}
