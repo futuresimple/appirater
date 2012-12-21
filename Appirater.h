@@ -59,7 +59,7 @@ extern NSString *const kAppiraterBadImpressionsCount;
  This is the message your users will see once they've passed the day+launches
  threshold.
  */
-#define APPIRATER_LOCALIZED_MESSAGE     NSLocalizedString(@"Finding Base helpful?\nConsider rating us 5 stars in the App Store to help others discover Base.", nil)
+#define APPIRATER_LOCALIZED_MESSAGE     NSLocalizedString(@"Finding Base helpful?\nConsider rating us 5 stars in the App Store to help others discover\u00A0Base.", nil)
 #define APPIRATER_MESSAGE				[NSString stringWithFormat:APPIRATER_LOCALIZED_MESSAGE]
 
 /*
