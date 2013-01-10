@@ -236,13 +236,15 @@ static BOOL _debug = NO;
 	{
 		// it's a new version of the app, so restart tracking
 		[userDefaults setObject:version forKey:kAppiraterCurrentVersion];
-		[userDefaults setDouble:[[NSDate date] timeIntervalSince1970] forKey:kAppiraterFirstUseDate];
-		[userDefaults setInteger:1 forKey:kAppiraterUseCount];
-		[userDefaults setInteger:0 forKey:kAppiraterSignificantEventCount];
-		[userDefaults setBool:NO forKey:kAppiraterRatedCurrentVersion];
-		[userDefaults setBool:NO forKey:kAppiraterDeclinedToRate];
-		[userDefaults setDouble:0 forKey:kAppiraterReminderRequestDate];
+        [userDefaults setDouble:[[NSDate date] timeIntervalSince1970] forKey:kAppiraterFirstUseDate];
         [userDefaults setInteger:0 forKey:kAppiraterBadImpressionsCount];
+        [userDefaults setInteger:1 forKey:kAppiraterUseCount];
+        [userDefaults setInteger:0 forKey:kAppiraterSignificantEventCount];
+        [userDefaults setDouble:0 forKey:kAppiraterReminderRequestDate];
+        if (APPIRATER_RASET_RATED_STATUS) {
+            [userDefaults setBool:NO forKey:kAppiraterRatedCurrentVersion];
+            [userDefaults setBool:NO forKey:kAppiraterDeclinedToRate];
+        }
 	}
 	
 	[userDefaults synchronize];
