@@ -241,7 +241,7 @@ static BOOL _debug = NO;
         [userDefaults setInteger:1 forKey:kAppiraterUseCount];
         [userDefaults setInteger:0 forKey:kAppiraterSignificantEventCount];
         [userDefaults setDouble:0 forKey:kAppiraterReminderRequestDate];
-        if (APPIRATER_RASET_RATED_STATUS) {
+        if (APPIRATER_RESET_RATED_STATUS) {
             [userDefaults setBool:NO forKey:kAppiraterRatedCurrentVersion];
             [userDefaults setBool:NO forKey:kAppiraterDeclinedToRate];
         }
@@ -290,8 +290,10 @@ static BOOL _debug = NO;
 		[userDefaults setDouble:0 forKey:kAppiraterFirstUseDate];
 		[userDefaults setInteger:0 forKey:kAppiraterUseCount];
 		[userDefaults setInteger:1 forKey:kAppiraterSignificantEventCount];
-		[userDefaults setBool:NO forKey:kAppiraterRatedCurrentVersion];
-		[userDefaults setBool:NO forKey:kAppiraterDeclinedToRate];
+        if (APPIRATER_RESET_RATED_STATUS) {
+            [userDefaults setBool:NO forKey:kAppiraterRatedCurrentVersion];
+            [userDefaults setBool:NO forKey:kAppiraterDeclinedToRate];
+        }
 		[userDefaults setDouble:0 forKey:kAppiraterReminderRequestDate];
         [userDefaults setInteger:0 forKey:kAppiraterBadImpressionsCount];
         [Appirater setTimeBeforeReminding:DEFAULT_TIME_BEFORE_REMINDING];

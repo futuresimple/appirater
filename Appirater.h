@@ -89,7 +89,7 @@ extern NSString *const kAppiraterBadImpressionsCount;
  If set to NO, Appirater will remember that user has already rated or declined to rate the app in the previous app versions.
  In order not to irritate users, this flag should be set to YES only from time to time.
  */
-#define APPIRATER_RASET_RATED_STATUS            NO
+#define APPIRATER_RESET_RATED_STATUS            NO
 
 @interface Appirater : NSObject <UIAlertViewDelegate> {
 
