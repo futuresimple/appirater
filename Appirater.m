@@ -49,6 +49,7 @@ NSString *const kAppiraterRatedCurrentVersion		= @"kAppiraterRatedCurrentVersion
 NSString *const kAppiraterDeclinedToRate			= @"kAppiraterDeclinedToRate";
 NSString *const kAppiraterReminderRequestDate		= @"kAppiraterReminderRequestDate";
 NSString *const kAppiraterBadImpressionsCount       = @"kAppiraterBadImpressionsCount";
+NSString *const kAppiraterTimeBeforeReminding       = @"kAppiraterTimeBeforeReminding";
 
 NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=APP_ID";
 NSString *templateReviewURLiOS6 = @"itms-apps://itunes.apple.com/LANGUAGE/app/idAPP_ID";
@@ -57,7 +58,6 @@ static NSString *_appId;
 static double _daysUntilPrompt = 30;
 static NSInteger _usesUntilPrompt = 20;
 static NSInteger _significantEventsUntilPrompt = -1;
-static double _timeBeforeReminding = 1;
 static BOOL _debug = NO;
 
 @interface Appirater ()
@@ -89,14 +89,9 @@ static BOOL _debug = NO;
     _significantEventsUntilPrompt = value;
 }
 
-+ (void) setTimeBeforeReminding:(double)value {
-    _timeBeforeReminding = value;
-}
-
 + (void) setDebug:(BOOL)debug {
     _debug = debug;
 }
-
 
 - (BOOL)connectedToNetwork {
     // Create zero addy
@@ -192,7 +187,7 @@ static BOOL _debug = NO;
 	// if the user wanted to be reminded later, has enough time passed?
 	NSDate *reminderRequestDate = [NSDate dateWithTimeIntervalSince1970:[userDefaults doubleForKey:kAppiraterReminderRequestDate]];
 	NSTimeInterval timeSinceReminderRequest = [[NSDate date] timeIntervalSinceDate:reminderRequestDate];
-	NSTimeInterval timeUntilReminder = 60 * 60 * 24 * _timeBeforeReminding;
+	NSTimeInterval timeUntilReminder = 60 * 60 * 24 * [userDefaults doubleForKey:kAppiraterTimeBeforeReminding];
 	if (timeSinceReminderRequest < timeUntilReminder)
 		return NO;
 	
@@ -244,6 +239,7 @@ static BOOL _debug = NO;
         if (APPIRATER_RESET_RATED_STATUS) {
             [userDefaults setBool:NO forKey:kAppiraterRatedCurrentVersion];
             [userDefaults setBool:NO forKey:kAppiraterDeclinedToRate];
+            [userDefaults setDouble:0 forKey:kAppiraterTimeBeforeReminding];
         }
 	}
 	
@@ -293,10 +289,10 @@ static BOOL _debug = NO;
         if (APPIRATER_RESET_RATED_STATUS) {
             [userDefaults setBool:NO forKey:kAppiraterRatedCurrentVersion];
             [userDefaults setBool:NO forKey:kAppiraterDeclinedToRate];
+            [userDefaults setDouble:DEFAULT_TIME_BEFORE_REMINDING forKey:kAppiraterTimeBeforeReminding];
+            [userDefaults setDouble:0 forKey:kAppiraterReminderRequestDate];
         }
-		[userDefaults setDouble:0 forKey:kAppiraterReminderRequestDate];
         [userDefaults setInteger:0 forKey:kAppiraterBadImpressionsCount];
-        [Appirater setTimeBeforeReminding:DEFAULT_TIME_BEFORE_REMINDING];
 	}
 	
 	[userDefaults synchronize];
@@ -408,7 +404,8 @@ static BOOL _debug = NO;
 		case 0:
 		{
 			// remind them later
-            [Appirater setTimeBeforeReminding:_timeBeforeReminding + DEFAULT_TIME_BEFORE_REMINDING];
+            double timeBeforeReminding = [userDefaults doubleForKey:kAppiraterTimeBeforeReminding];
+            [userDefaults setDouble:timeBeforeReminding + DEFAULT_TIME_BEFORE_REMINDING forKey:kAppiraterTimeBeforeReminding];
 			[userDefaults setDouble:[[NSDate date] timeIntervalSince1970] forKey:kAppiraterReminderRequestDate];
 			[userDefaults synchronize];
             
